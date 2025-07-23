@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pyo
+.coverage
+.env
+*.log
+nivel_compression_demo.json
+.vscode/
