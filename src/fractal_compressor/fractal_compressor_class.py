@@ -140,101 +140,185 @@ class FractalCompressor:
         while len(fractal_text) < self.max_levels:
             fractal_text.append("")
 
-        # 主循环：容量感知的智能分块处理
-        remaining_text = new_text
-        level0_capacity = self.get_threshold(0)
+        # 智能整合模式：直接处理整个文本，由LLM控制长度增长
+        self.logger.debug("智能整合模式：直接处理完整文本，长度=%d", len(new_text))
         
-
-        chunk_count = 0
-        while remaining_text:
-            chunk_count += 1
+        # 直接将整个新文本递归处理到Level 0
+        # 长度控制由_recursive_compress负责
+        # 采取最小超界的方式循环填充
+        leave_text = new_text
+        count = 0
+        while len(leave_text) + len(fractal_text[0]) > self.get_threshold(0):
+            add_text = leave_text[:self.get_threshold(0) - len(fractal_text[0]) + 1]
+            fractal_text[0] += add_text
+            leave_text = leave_text[len(add_text):]
+            self.logger.debug("Loop %d: Level 0 容量超限: %d > %d，触发分割压缩", count, len(fractal_text[0]), 
+                          self.get_threshold(0))
+            fractal_text = self._recursive_compress(fractal_text, None, 0)
+            count += 1
             
-            # 步骤1：分析Level 0的容量状态
-            current_length = len(fractal_text[0])
-            available_space = level0_capacity - current_length
-
-            # 步骤2：智能分块策略（+1超界机制）
-            if available_space > 0:
-                # 情况A：Level 0还有空间，优先填满（允许+1超界防止碎片）
-                chunk_size = min(available_space + 1, len(remaining_text))
-                strategy = "填充剩余空间"
-            else:
-                # 情况B：Level 0已满，使用标准容量+1进行分块
-                chunk_size = min(level0_capacity + 1, len(remaining_text))
-                strategy = "标准分块"
-
-            # 步骤3：执行分块
-            chunk = remaining_text[:chunk_size]
-            remaining_text = remaining_text[chunk_size:]
-            
-
-            # 步骤4：递归处理分块（可能触发多层级压缩）
-            fractal_text = self._recursive_compress(fractal_text, chunk, 0)
-
-        total_levels = sum(1 for level in fractal_text if level.strip())
-        total_length = sum(len(level) for level in fractal_text)
-        self.logger.info(
-            "压缩完成: 共%d个分块, %d个活跃层级, 总长度=%d",
-            chunk_count, total_levels, total_length
-        )
+        fractal_text[0] += leave_text
 
         return fractal_text
 
-    def _add_to_level(self, fractal_text: List[str], text: str, level: int):
+    def _llm_integrate_and_add(self, existing_content: str, new_text: str) -> str:
         """
-        层级文本追加器
-
-        负责将文本追加到指定层级，根据层级特性采用不同的连接策略：
-        - Level 0: 直接连接，保持文本流畅性
-        - Level 1+: 换行分隔，便于区分不同的压缩块
-
-        自动扩展机制：如果目标层级不存在，自动创建到该层级的所有空层。
-
+        使用LLM智能整合现有内容和新文本
+        
+        这是对原_add_to_level方法的革命性重构，将机械的文本拼接
+        升级为智能的语义整合，同时实现长度的精确控制。
+        
         Args:
-            fractal_text: 分形结构
-            text: 要追加的文本
-            level: 目标层级（0为主内容层）
-
-        连接策略：
-            Level 0: "现有内容" + "新文本"
-            Level 1+: "现有内容" + "\n" + "新文本"
+            existing_content: 当前层级的现有内容, 可能为空
+            new_text: 需要添加的新文本
+            
+        Returns:
+            整合后的内容，长度 = len(existing_content) + int(len(new_text) * 0.618)
+            
+        核心优势：
+            1. 语义整合：消除简单拼接的痕迹，提升内容连贯性
+            2. 长度控制：每次增长固定比例，避免长度爆炸
+            3. 信息去重：自动识别和合并重复内容
+            4. 质量提升：在添加过程中就开始信息密度优化
         """
-        # 自动扩展：确保目标层级及之前的所有层级都存在
-        while len(fractal_text) <= level:
-            fractal_text.append("")
+            
+        # 计算目标长度：现有长度 + 新文本长度的61.8%
+        target_length = len(existing_content) + int(len(new_text) * self.ratio)
+        
+        self.logger.debug(
+            "LLM智能整合: 现有=%d字符, 新增=%d字符, 目标=%d字符",
+            len(existing_content), len(new_text), target_length
+        )
+        
+        # 构造整合prompt
+        combined_text = existing_content + "\n" + new_text
+        
+        # 调用LLM进行智能整合
+        try:
+            integrated_result = self._call_llm_integration(
+                combined_text, target_length, len(existing_content), len(new_text)
+            )
+            
+            self.logger.debug(
+                "整合完成: %d字符 -> %d字符 (目标%d)",
+                len(combined_text), len(integrated_result), target_length
+            )
+            
+            return integrated_result
+            
+        except Exception as e:
+            # 如果LLM整合失败，使用fallback策略
+            self.logger.warning("LLM整合失败，使用fallback策略: %s", str(e))
+            return self._fallback_integration(combined_text, target_length)
+    
+    def _call_llm_integration(self, combined_text: str, target_length: int, 
+                             existing_length: int, new_length: int) -> str:
+        """
+        调用LLM进行内容整合的具体实现
+        
+        Args:
+            combined_text: 现有内容+新内容的组合
+            target_length: 目标长度
+            existing_length: 现有内容长度
+            new_length: 新内容长度
+            
+        Returns:
+            整合后的文本
+        """
+        compressor = LLMTextCompressor()
+        
+        # 使用自定义的整合策略和prompt
+        result = compressor.compress(
+            text=combined_text,
+            target_length=target_length,
+            llm_config=self.llm_config,
+            strategy="precise",
+            max_attempts=2,
+            strict_length=True,
+            custom_template=f"""你是一个专业的文本整合专家。请智能整合以下内容：
 
-        old_length = len(fractal_text[level])
+原有内容（{existing_length}字符，保留核心信息）：
+{combined_text[:existing_length]}
+
+新增内容（{new_length}字符，融入关键信息）：
+{combined_text[existing_length+1:]}
+
+整合要求：
+1. 保持原有内容的核心信息和逻辑结构
+2. 将新内容的关键信息自然融入
+3. 去除重复和冗余表述
+4. 提升整体语义连贯性
+5. 严格控制在{{target_length}}字符以内
+
+请直接输出整合结果：{{text}}""",
+        )
+        return result["text"]
+    
+    def _fallback_integration(self, combined_text: str, target_length: int) -> str:
+        """
+        LLM整合失败时的回退策略
         
-        # 智能追加：根据层级特性和现有内容状态选择连接策略
-        if fractal_text[level].strip():
-            if level == 0:
-                # Level 0策略：直接连接，保持文本连续性
-                fractal_text[level] += text
-                strategy = "直接连接"
-            else:
-                # Level 1+策略：换行分隔，便于阅读不同的压缩块
-                fractal_text[level] += "\n" + text
-                strategy = "换行分隔"
+        Args:
+            combined_text: 组合文本
+            target_length: 目标长度
+            
+        Returns:
+            回退处理后的文本
+        """
+        if len(combined_text) <= target_length:
+            return combined_text
         else:
-            # 空层级：直接设置为新文本
-            fractal_text[level] = text
-            strategy = "直接设置"
+            # 智能截断到目标长度
+            return self._smart_truncate_for_integration(combined_text, target_length)
+    
+    def _smart_truncate_for_integration(self, text: str, max_length: int) -> str:
+        """
+        针对整合场景的智能截断
         
-        new_length = len(fractal_text[level])
+        Args:
+            text: 需要截断的文本
+            max_length: 最大长度
+            
+        Returns:
+            截断后的文本
+        """
+        if len(text) <= max_length:
+            return text
+
+        # 尝试在句子边界截断
+        sentences_ends = ["。", "！", "？", ".", "!", "?"]
+        for i in range(max_length - 1, max(0, max_length - 20), -1):
+            if i < len(text) and text[i] in sentences_ends:
+                return text[:i + 1]
+
+        # 尝试在逗号或分号处截断  
+        punctuation = ["，", ",", "；", ";"]
+        for i in range(max_length - 1, max(0, max_length - 10), -1):
+            if i < len(text) and text[i] in punctuation:
+                return text[:i + 1]
+
+        # 直接截断
+        return text[:max_length]
 
     def _recursive_compress(self, fractal_text: List[str], text: str, level: int):
         """
-        递归层级编码器
+        递归层级编码器（重构版）
 
-        系统的核心递归引擎，负责将文本块放置到指定层级，并在容量超限时
-        触发分割压缩，形成向上递归的分形结构。
+        核心重构：将原来的"机械添加+超限压缩"模式升级为"智能整合+容量管理"模式。
+        每次文本添加都通过LLM进行智能整合，实现长度的精确控制和语义的优化。
 
-        工作流程：
-        1. 边界检查：如果达到最大层级，直接返回
-        2. 文本放置：将文本追加到当前层级
-        3. 容量检查：如果当前层级超出容量限制
-        4. 分割压缩：使用LLM将超出部分压缩
-        5. 递归上升：将压缩结果递归到上一层级
+        新工作流程：
+        1. 边界检查：防止无限递归
+        2. 智能整合：使用LLM将新文本智能整合到现有内容中
+        3. 容量检查：检查整合后是否超出容量限制
+        4. 分割压缩：超限时按0.382/0.618比例分割并压缩
+        5. 递归上升：压缩部分递归到上一层级
+
+        革命性改进：
+        - 取消了机械的_add_to_level操作
+        - 每次添加都进行语义优化整合
+        - 长度增长可控：现有长度 + 新文本长度*0.618
+        - 提升了信息密度和语义连贯性
 
         Args:
             fractal_text: 分形结构
@@ -243,33 +327,63 @@ class FractalCompressor:
 
         Returns:
             更新后的分形结构
-
-        注意：
-            这里不涉及+1超界控制，该机制仅在encode方法的分块阶段使用
         """
         # 步骤1：边界保护 - 防止无限递归
         if level >= self.max_levels:
-                return fractal_text
+            self.logger.debug("达到最大层级 %d，停止递归", level)
+            return fractal_text
 
-        # 步骤2：文本放置 - 将文本块追加到当前层级
-        self._add_to_level(fractal_text, text, level)
+        # 自动扩展：确保目标层级存在
+        while len(fractal_text) <= level:
+            fractal_text.append("")
+
+        # 步骤2：智能整合 - 使用LLM整合现有内容和新文本
+        existing_content = fractal_text[level]
+       
+        if text:
+            if existing_content.strip():
+                # 有现有内容，进行智能整合
+                integrated_content = self._llm_integrate_and_add(existing_content, text)
+                self.logger.debug(
+                    "Level %d 智能整合完成: %d + %d -> %d 字符",
+                    level, len(existing_content), len(text), len(integrated_content)
+                )
+            else:
+                # 空层级，直接使用新文本
+                integrated_content = text
+                self.logger.debug("Level %d 首次添加: %d 字符", level, len(text))
+        else:
+            integrated_content = existing_content
+
+        fractal_text[level] = integrated_content
 
         # 步骤3：容量检查与分形递归
         current_capacity = self.get_threshold(level)
-        if len(fractal_text[level]) > current_capacity:
+        if len(integrated_content) > current_capacity:
+            self.logger.debug(
+                "Level %d 容量超限: %d > %d，触发分割压缩",
+                level, len(integrated_content), current_capacity
+            )
             
             # 步骤4A：容量超限，触发分割压缩
-            preserved_part, compressed_part = self._llm_compress(
-                fractal_text[level], level
-            )
+            up_part, preserved_part = smart_split(integrated_content, 1 - self.ratio)
             fractal_text[level] = preserved_part  # 保留部分留在当前层
             
+            self.logger.debug(
+                "Level %d 分割完成: 保留%d字符，压缩%d字符到上层",
+                level, len(preserved_part), len(up_part) if up_part else 0
+            )
 
             # 步骤4B：递归上升 - 压缩部分递归到上层
-            if compressed_part:
+            if up_part:
                 fractal_text = self._recursive_compress(
-                    fractal_text, compressed_part, level + 1
+                    fractal_text, up_part, level + 1
                 )
+        else:
+            self.logger.debug(
+                "Level %d 容量充足: %d <= %d",
+                level, len(integrated_content), current_capacity
+            )
 
         return fractal_text
 
@@ -301,16 +415,18 @@ class FractalCompressor:
         """
         智能分割压缩器
 
-        当层级容量超限时，使用"分割+压缩"策略处理文本：
-        1. 智能分割：按黄金比例分割文本，前0.382包含核心信息
-        2. LLM压缩：对前部分进行智能压缩，保持关键信息上升到高层级
+        当层级容量超限时，使用"容量控制分割+压缩"策略处理文本：
+        1. 容量控制分割：保留部分不超过当前层容量，超出部分全部压缩上升
+        2. LLM压缩：对超出部分进行智能压缩，保持关键信息上升到高层级
 
-        分割策略（修正后）：
-            前部分比例 = 1 - ratio = 1 - 0.618 = 0.382 (压缩后上升)
-            后部分比例 = ratio = 0.618 (保留在当前层)
+        修正后的分割策略：
+            保留部分长度 = min(当前层容量, 文本长度 * 0.618)
+            压缩部分长度 = 文本长度 - 保留部分长度
 
-        这确保了核心信息(前0.382)在上层形成长程关联，
-        具体细节(后0.618)在当前层保留。
+        这确保了：
+        - 保留部分绝对不会超过当前层容量限制
+        - 超出的所有内容都被压缩并递归到上层
+        - 维持分形的容量控制特性
 
         Args:
             text: 需要处理的超限文本
@@ -318,59 +434,62 @@ class FractalCompressor:
 
         Returns:
             (保留部分, 压缩部分) - 保留部分留在当前层，压缩部分递归到上层
-
-        注意：
-            如果分割后的前部分为空，返回空字符串而不调用LLM
         """
         
-        # 步骤1：智能分割 - 按黄金比例分为前后两部分
-        front_ratio = 1 - self.ratio  # 0.382 前部分比例
-        front_part, back_part = smart_split(
-            text,
-            ratio=front_ratio,
-            language=self.llm_config.get("language", "mixed"),
-        )
+        # 步骤1：容量控制分割 - 确保保留部分不超过门限
+        current_threshold = self.get_threshold(level)
+        
+        # 直接按门限截断，确保保留部分不超限
+        if len(text) <= current_threshold:
+            # 文本本身就不超限，无需分割
+            preserved_part = text
+            compressed_part = ""
+        else:
+            # 超限时，严格按门限分割
+            preserved_part = text[:current_threshold]
+            compressed_part = text[current_threshold:]
         
         self.logger.debug(
             "拆分前文本: %s",
             text[:200] + "..." if len(text) > 200 else text
         )
         self.logger.debug(
-            "拆分后-前部分(%.1f%%): %s",
-            len(front_part)/len(text)*100,
-            front_part[:100] + "..." if len(front_part) > 100 else front_part
+            "容量控制分割: 门限=%d, 保留长度=%d, 压缩长度=%d",
+            current_threshold, len(preserved_part), len(compressed_part)
         )
         self.logger.debug(
-            "拆分后-后部分(%.1f%%): %s",
-            len(back_part)/len(text)*100,
-            back_part[:100] + "..." if len(back_part) > 100 else back_part
+            "拆分后-保留部分(%d字符): %s",
+            len(preserved_part),
+            preserved_part[:100] + "..." if len(preserved_part) > 100 else preserved_part
+        )
+        self.logger.debug(
+            "拆分后-压缩部分(%d字符): %s",
+            len(compressed_part),
+            compressed_part[:100] + "..." if len(compressed_part) > 100 else compressed_part
         )
 
-        # 步骤2：LLM压缩前部分 - 核心信息上升到高层级
-        if front_part:
-            # 计算目标压缩长度
-            target_length = int(len(front_part) * self.ratio)
+        # 步骤2：LLM压缩超出部分 - 压缩后上升到高层级
+        if compressed_part:
+            # 计算目标压缩长度：压缩部分按0.618比例压缩
+            target_length = int(len(compressed_part) * self.ratio)
             self.logger.debug(
                 "压缩前文本: %s",
-                front_part[:200] + "..." if len(front_part) > 200 else front_part
-            )
-            compressed_part = self._call_llm_compression(
-                text=front_part, target_length=target_length
-            )
-        else:
-            # 无前部分，无需压缩
-            compressed_part = ""
-
-        # 后部分保留在当前层级
-        preserved_part = back_part
-        
-        if compressed_part:
-            self.logger.debug(
-                "压缩后文本: %s",
                 compressed_part[:200] + "..." if len(compressed_part) > 200 else compressed_part
             )
+            final_compressed_part = self._call_llm_compression(
+                text=compressed_part, target_length=target_length
+            )
+        else:
+            # 无需压缩的部分
+            final_compressed_part = ""
+        
+        if final_compressed_part:
+            self.logger.debug(
+                "压缩后文本: %s",
+                final_compressed_part[:200] + "..." if len(final_compressed_part) > 200 else final_compressed_part
+            )
 
-        return preserved_part, compressed_part
+        return preserved_part, final_compressed_part
 
     def _call_llm_compression(self, text: str, target_length: int) -> str:
         """

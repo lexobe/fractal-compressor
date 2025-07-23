@@ -19,7 +19,7 @@ from fractal_compressor import FractalCompressor
 # 全局保守配置 - 只记录重要信息
 logging.basicConfig(
     level=logging.WARN,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    format='%(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),  # 输出到控制台
         logging.FileHandler('fractal_compression_debug.log', encoding='utf-8')  # 输出到文件
