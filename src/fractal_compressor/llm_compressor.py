@@ -186,8 +186,10 @@ class LLMTextCompressor:
 
                 # 长度检查
                 if strict_length and len(compressed) > target_length:
-                    self.logger.debug("长度超限，进行智能截断: %d -> %d", len(compressed), target_length)
-                    compressed = self._smart_truncate(compressed, target_length)
+                    self.logger.debug("长度超限，进行智能分割: %d -> %d", len(compressed), target_length)
+                    compressed, overflow = self._smart_split(compressed, target_length)
+                    if overflow:
+                        self.logger.debug("分割产生溢出内容: %s", overflow[:50] + "..." if len(overflow) > 50 else overflow)
 
                 self.logger.debug(
                     "压缩后文本: %s",
@@ -223,57 +225,14 @@ class LLMTextCompressor:
             except Exception as e:
                 self.logger.debug("第%d次尝试失败: %s", attempt + 1, str(e))
                 if attempt == max_attempts - 1:
-                    # 最后一次失败，返回截断结果
-                    self.logger.warning("所有尝试失败，使用fallback截断: %s", str(e))
-                    fallback = (
-                        text[:target_length] if len(text) > target_length else text
-                    )
-                    self.logger.debug(
-                        "Fallback结果: %s",
-                        fallback[:100] + "..." if len(fallback) > 100 else fallback
-                    )
-                    return {
-                        "text": fallback,
-                        "original_text": text,
-                        "original_length": len(text),
-                        "compressed_length": len(fallback),
-                        "target_length": target_length,
-                        "compression_ratio": (
-                            len(fallback) / len(text) if len(text) > 0 else 0
-                        ),
-                        "attempts": attempt + 1,
-                        "strategy": "fallback",
-                        "temperature": temperature,
-                        "model": model,
-                        "processing_time": time.time() - start_time,
-                        "success": False,
-                        "error": str(e),
-                        "length_constraint_satisfied": len(fallback) <= target_length,
-                    }
+                    # 最后一次失败，直接抛出异常
+                    self.logger.error("LLM压缩失败，已达最大尝试次数: %s", str(e))
+                    raise Exception(f"LLM压缩失败: {str(e)}")
                 continue
 
-        # 所有尝试失败
-        self.logger.warning("达到最大尝试次数，使用最终fallback")
-        fallback = text[:target_length] if len(text) > target_length else text
-        self.logger.debug(
-            "最终Fallback结果: %s",
-            fallback[:100] + "..." if len(fallback) > 100 else fallback
-        )
-        return {
-            "text": fallback,
-            "original_text": text,
-            "original_length": len(text),
-            "compressed_length": len(fallback),
-            "target_length": target_length,
-            "compression_ratio": len(fallback) / len(text) if len(text) > 0 else 0,
-            "attempts": max_attempts,
-            "strategy": "fallback",
-            "temperature": temperature,
-            "model": model,
-            "processing_time": time.time() - start_time,
-            "success": False,
-            "length_constraint_satisfied": len(fallback) <= target_length,
-        }
+        # 所有尝试失败，抛出异常
+        self.logger.error("达到最大尝试次数，LLM压缩失败")
+        raise Exception("LLM压缩失败: 达到最大尝试次数")
 
     def _build_prompt(
         self,
@@ -338,24 +297,57 @@ class LLMTextCompressor:
 
         return text.strip()
 
-    def _smart_truncate(self, text: str, max_length: int) -> str:
-        """智能截断到指定长度"""
+    def _smart_split(self, text: str, max_length: int) -> tuple[str, str]:
+        """智能分割文本到指定长度，返回(保留部分, 溢出部分)"""
         if len(text) <= max_length:
-            return text
+            return text, ""
 
-        # 尝试在标点符号处截断
-        punctuation = ["。", "！", "？", ".", "!", "?", "，", ",", "；", ";"]
+        # 尝试在句子边界分割（句号、感叹号、问号）
+        sentence_punctuation = ["。", "！", "？", ".", "!", "?"]
+        for i in range(max_length - 1, max(0, max_length - 20), -1):
+            if i < len(text) and text[i] in sentence_punctuation:
+                return text[:i + 1], text[i + 1:].strip()
+
+        # 尝试在短语边界分割（逗号、分号）
+        phrase_punctuation = ["，", ",", "；", ";", "、"]
+        for i in range(max_length - 1, max(0, max_length - 15), -1):
+            if i < len(text) and text[i] in phrase_punctuation:
+                return text[:i + 1], text[i + 1:].strip()
+
+        # 尝试在词汇边界分割（空格）
         for i in range(max_length - 1, max(0, max_length - 10), -1):
-            if i < len(text) and text[i] in punctuation:
-                return text[: i + 1]
-
-        # 尝试在空格处截断
-        for i in range(max_length - 1, max(0, max_length - 5), -1):
             if i < len(text) and text[i] == " ":
-                return text[:i]
+                return text[:i], text[i + 1:].strip()
+        
+        # 尝试在中文词汇边界分割（避免拆分常见词汇）
+        # 检查是否在常见双字词中间
+        common_words = ["量子", "科学", "技术", "系统", "计算", "研究", "实验", "突破", "应用", "发展"]
+        for word in common_words:
+            if len(word) == 2 and max_length - 2 >= 0:
+                word_start = text.find(word, max(0, max_length - 5))
+                if word_start != -1 and word_start < max_length < word_start + len(word):
+                    # 在双字词中间，调整分割点到词的开始或结束
+                    if max_length - word_start <= len(word) // 2:
+                        # 更接近词的开始，分割到词前
+                        return text[:word_start], text[word_start:]
+                    else:
+                        # 更接近词的结束，分割到词后
+                        return text[:word_start + len(word)], text[word_start + len(word):]
 
-        # 直接截断
-        return text[:max_length]
+        # 最后的安全分割：确保不在中文字符中间分割
+        split_pos = max_length
+        while split_pos > max_length - 5 and split_pos > 0:
+            char = text[split_pos - 1] if split_pos > 0 else ""
+            # 如果是中文字符，往前找合适的分割点
+            if '\u4e00' <= char <= '\u9fff':
+                split_pos -= 1
+            else:
+                break
+        
+        if split_pos <= 0:
+            split_pos = max_length
+            
+        return text[:split_pos], text[split_pos:]
 
     def _validate_quality(
         self, compressed: str, original: str, target_length: int, strict_length: bool

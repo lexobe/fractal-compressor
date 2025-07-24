@@ -1,0 +1,120 @@
+{
+  "source": "corpus_4_technical.txt",
+  "timestamp": "2025-07-23 21:24:54",
+  "success": true,
+  "original": {
+    "text": "DeepSpeed深度学习优化库技术文档\n\n1. 系统概述\nDeepSpeed是一个深度学习优化库，旨在使分布式训练和推理变得简单、高效且有效。该库由微软研究院开发，专注于解决大规模深度学习模型训练和推理中的关键挑战。\n\n2. 核心技术特性\n2.1 ZeRO内存优化\nZeRO（Zero Redundancy Optimizer）技术通过消除数据并行中的内存冗余，实现了显著的内存效率提升。主要包括：\n- ZeRO-1：优化器状态分片\n- ZeRO-2：梯度分片\n- ZeRO-3：参数分片\n\n2.2 3D并行策略\n结合数据并行、模型并行和流水线并行，实现最优的计算资源利用：\n- 数据并行：跨设备分发训练样本\n- 模型并行：跨设备分割模型参数\n- 流水线并行：跨设备分割模型层\n\n3. 安装配置\n3.1 环境要求\n- Python 3.6+\n- PyTorch 1.5+\n- CUDA 10.1+\n\n3.2 安装步骤\n```bash\npip install deepspeed\n```\n\n4. 使用示例\n```python\nimport deepspeed\nmodel_engine, optimizer, _, _ = deepspeed.initialize(\n    model=model,\n    model_parameters=model.parameters(),\n    config_params=ds_config\n)\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。",
+    "length": 713
+  },
+  "compressed": {
+    "levels": [
+      ")\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。",
+      "model=model, model_pa\nparameters(),\n    config",
+      "pip ins\n```python\nimp\noptimizer, _,",
+      "实现最优的\n跨设备分割模型参\n- Python",
+      "1 Ze\n实现\n\n梯度分片",
+      "习\nDe\n微软",
+      "ep\nS\n",
+      "De"
+    ],
+    "level_lengths": [
+      93,
+      46,
+      35,
+      23,
+      13,
+      7,
+      5,
+      2
+    ],
+    "thresholds": [
+      100,
+      61,
+      38,
+      23,
+      14,
+      9,
+      5,
+      3
+    ],
+    "level_analysis": [
+      {
+        "level": 0,
+        "length": 93,
+        "threshold": 100,
+        "usage_ratio": 0.93,
+        "is_overflow": false,
+        "content": ")\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。"
+      },
+      {
+        "level": 1,
+        "length": 46,
+        "threshold": 61,
+        "usage_ratio": 0.7540983606557377,
+        "is_overflow": false,
+        "content": "model=model, model_pa\nparameters(),\n    config"
+      },
+      {
+        "level": 2,
+        "length": 35,
+        "threshold": 38,
+        "usage_ratio": 0.9210526315789473,
+        "is_overflow": false,
+        "content": "pip ins\n```python\nimp\noptimizer, _,"
+      },
+      {
+        "level": 3,
+        "length": 23,
+        "threshold": 23,
+        "usage_ratio": 1.0,
+        "is_overflow": false,
+        "content": "实现最优的\n跨设备分割模型参\n- Python"
+      },
+      {
+        "level": 4,
+        "length": 13,
+        "threshold": 14,
+        "usage_ratio": 0.9285714285714286,
+        "is_overflow": false,
+        "content": "1 Ze\n实现\n\n梯度分片"
+      },
+      {
+        "level": 5,
+        "length": 7,
+        "threshold": 9,
+        "usage_ratio": 0.7777777777777778,
+        "is_overflow": false,
+        "content": "习\nDe\n微软"
+      },
+      {
+        "level": 6,
+        "length": 5,
+        "threshold": 5,
+        "usage_ratio": 1.0,
+        "is_overflow": false,
+        "content": "ep\nS\n"
+      },
+      {
+        "level": 7,
+        "length": 2,
+        "threshold": 3,
+        "usage_ratio": 0.6666666666666666,
+        "is_overflow": false,
+        "content": "De"
+      }
+    ]
+  },
+  "statistics": {
+    "original_length": 713,
+    "compressed_length": 224,
+    "compression_ratio": 0.3141654978962132,
+    "compression_efficiency": 68.58345021037869,
+    "processing_time": 1.2954692840576172,
+    "space_saved": 489
+  },
+  "config": {
+    "ratio": 0.618,
+    "base_threshold": 100,
+    "max_levels": 8
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "source": "corpus_4_technical.txt",
+  "timestamp": "2025-07-24 10:28:05",
+  "success": true,
+  "original": {
+    "text": "DeepSpeed深度学习优化库技术文档\n\n1. 系统概述\nDeepSpeed是一个深度学习优化库，旨在使分布式训练和推理变得简单、高效且有效。该库由微软研究院开发，专注于解决大规模深度学习模型训练和推理中的关键挑战。\n\n2. 核心技术特性\n2.1 ZeRO内存优化\nZeRO（Zero Redundancy Optimizer）技术通过消除数据并行中的内存冗余，实现了显著的内存效率提升。主要包括：\n- ZeRO-1：优化器状态分片\n- ZeRO-2：梯度分片\n- ZeRO-3：参数分片\n\n2.2 3D并行策略\n结合数据并行、模型并行和流水线并行，实现最优的计算资源利用：\n- 数据并行：跨设备分发训练样本\n- 模型并行：跨设备分割模型参数\n- 流水线并行：跨设备分割模型层\n\n3. 安装配置\n3.1 环境要求\n- Python 3.6+\n- PyTorch 1.5+\n- CUDA 10.1+\n\n3.2 安装步骤\n```bash\npip install deepspeed\n```\n\n4. 使用示例\n```python\nimport deepspeed\nmodel_engine, optimizer, _, _ = deepspeed.initialize(\n    model=model,\n    model_parameters=model.parameters(),\n    config_params=ds_config\n)\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。",
+    "length": 713
+  },
+  "compressed": {
+    "levels": [
+      ")\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。",
+      "arameters=model, config_params=ds_config)",
+      "izer = deepsp`，eed(model)",
+      "深度学习优化库，由微软研究院开发，结合数分片，",
+      "DeepSpeed",
+      "",
+      "",
+      ""
+    ],
+    "level_lengths": [
+      93,
+      41,
+      25,
+      23,
+      9,
+      0,
+      0,
+      0
+    ],
+    "thresholds": [
+      100,
+      61,
+      38,
+      23,
+      14,
+      9,
+      5,
+      3
+    ],
+    "level_analysis": [
+      {
+        "level": 0,
+        "length": 93,
+        "threshold": 100,
+        "usage_ratio": 0.93,
+        "is_overflow": false,
+        "content": ")\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。"
+      },
+      {
+        "level": 1,
+        "length": 41,
+        "threshold": 61,
+        "usage_ratio": 0.6721311475409836,
+        "is_overflow": false,
+        "content": "arameters=model, config_params=ds_config)"
+      },
+      {
+        "level": 2,
+        "length": 25,
+        "threshold": 38,
+        "usage_ratio": 0.6578947368421053,
+        "is_overflow": false,
+        "content": "izer = deepsp`，eed(model)"
+      },
+      {
+        "level": 3,
+        "length": 23,
+        "threshold": 23,
+        "usage_ratio": 1.0,
+        "is_overflow": false,
+        "content": "深度学习优化库，由微软研究院开发，结合数分片，"
+      },
+      {
+        "level": 4,
+        "length": 9,
+        "threshold": 14,
+        "usage_ratio": 0.6428571428571429,
+        "is_overflow": false,
+        "content": "DeepSpeed"
+      },
+      {
+        "level": 5,
+        "length": 0,
+        "threshold": 9,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      },
+      {
+        "level": 6,
+        "length": 0,
+        "threshold": 5,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      },
+      {
+        "level": 7,
+        "length": 0,
+        "threshold": 3,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      }
+    ]
+  },
+  "statistics": {
+    "original_length": 713,
+    "compressed_length": 191,
+    "compression_ratio": 0.26788218793828894,
+    "compression_efficiency": 73.21178120617111,
+    "processing_time": 37.90225696563721,
+    "space_saved": 522
+  },
+  "config": {
+    "ratio": 0.618,
+    "base_threshold": 100,
+    "max_levels": 8
+  }
+}

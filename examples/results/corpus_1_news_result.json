@@ -1,0 +1,120 @@
+{
+  "source": "corpus_1_news.txt",
+  "timestamp": "2025-07-23 21:24:44",
+  "success": true,
+  "original": {
+    "text": "近日，我国科学家在量子计算领域取得重大突破。中科院量子信息重点实验室宣布，其研发的新型量子处理器在特定算法上实现了显著的性能提升。该处理器采用超导量子比特技术，成功将量子相干时间延长至200微秒，比此前记录提升了50%。\n\n研究团队表示，这一突破将为解决复杂计算问题提供新的可能性。量子计算在密码学、药物研发、材料科学等领域具有巨大应用潜力。目前，该实验室正与多家科技企业合作，推动技术产业化应用。\n\n专家指出，尽管量子计算仍面临诸多技术挑战，但这次突破标志着我国在该领域已达到国际先进水平。未来几年，随着技术不断成熟，量子计算有望在更多实际应用场景中发挥重要作用。",
+    "length": 283
+  },
+  "compressed": {
+    "levels": [
+      "尽管量子计算仍面临诸多技术挑战，但这次突破标志着我国在该领域已达到国际先进水平。未来几年，随着技术不断成熟，量子计算有望在更多实际应用场景中发挥重要作用。",
+      "量子计算在密码学、药物研发、材料科\n目前，该实验室正与多家科技企业合作，推动",
+      "定算法上实现了显著的性能\n\n至200微秒\n研究团队表示",
+      "子计算领\n域取得重大突破。\n中科院量",
+      "近日，我国科学家在量",
+      "",
+      "",
+      ""
+    ],
+    "level_lengths": [
+      77,
+      38,
+      27,
+      18,
+      10,
+      0,
+      0,
+      0
+    ],
+    "thresholds": [
+      100,
+      61,
+      38,
+      23,
+      14,
+      9,
+      5,
+      3
+    ],
+    "level_analysis": [
+      {
+        "level": 0,
+        "length": 77,
+        "threshold": 100,
+        "usage_ratio": 0.77,
+        "is_overflow": false,
+        "content": "尽管量子计算仍面临诸多技术挑战，但这次突破标志着我国在该领域已达到国际先进水平。未来几年，随着技术不断成熟，量子计算有望在更多实际应用场景中发挥重要作用。"
+      },
+      {
+        "level": 1,
+        "length": 38,
+        "threshold": 61,
+        "usage_ratio": 0.6229508196721312,
+        "is_overflow": false,
+        "content": "量子计算在密码学、药物研发、材料科\n目前，该实验室正与多家科技企业合作，推动"
+      },
+      {
+        "level": 2,
+        "length": 27,
+        "threshold": 38,
+        "usage_ratio": 0.7105263157894737,
+        "is_overflow": false,
+        "content": "定算法上实现了显著的性能\n\n至200微秒\n研究团队表示"
+      },
+      {
+        "level": 3,
+        "length": 18,
+        "threshold": 23,
+        "usage_ratio": 0.782608695652174,
+        "is_overflow": false,
+        "content": "子计算领\n域取得重大突破。\n中科院量"
+      },
+      {
+        "level": 4,
+        "length": 10,
+        "threshold": 14,
+        "usage_ratio": 0.7142857142857143,
+        "is_overflow": false,
+        "content": "近日，我国科学家在量"
+      },
+      {
+        "level": 5,
+        "length": 0,
+        "threshold": 9,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      },
+      {
+        "level": 6,
+        "length": 0,
+        "threshold": 5,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      },
+      {
+        "level": 7,
+        "length": 0,
+        "threshold": 3,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      }
+    ]
+  },
+  "statistics": {
+    "original_length": 283,
+    "compressed_length": 170,
+    "compression_ratio": 0.6007067137809188,
+    "compression_efficiency": 39.92932862190812,
+    "processing_time": 0.27739858627319336,
+    "space_saved": 113
+  },
+  "config": {
+    "ratio": 0.618,
+    "base_threshold": 100,
+    "max_levels": 8
+  }
+}

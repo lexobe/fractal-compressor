@@ -1,0 +1,120 @@
+{
+  "source": "corpus_6_mathematics.txt",
+  "timestamp": "2025-07-24 10:29:04",
+  "success": true,
+  "original": {
+    "text": "本文研究了拓扑动力系统中的混沌现象及其在数学分析中的应用。设(X,T)为拓扑动力系统，其中X是紧致度量空间，T:X→X是连续映射。我们定义了系统的拓扑熵h(T)=sup{h(T,α):α是X的有限开覆盖}，其中h(T,α)表示相对于覆盖α的拓扑熵。\n\n定理1：若T具有正拓扑熵，则存在不可数的T-不变集S⊂X，使得T|S拓扑共轭于满移位σ:Σ₂→Σ₂，其中Σ₂={0,1}^ℕ是双符号空间。\n\n证明：考虑系统的周期点集合Per(T)={x∈X:T^n(x)=x对某个n∈ℕ}。由于h(T)>0，根据变分原理，存在T-不变测度μ使得hμ(T)>0。构造马蹄映射H:I→I，其中I=[0,1]，定义H(x)=2x (mod 1)当x∈[0,1/2)，H(x)=2x-1当x∈[1/2,1]。\n\n引理2：设f:M→M是紧致流形M上的C¹映射，如果存在双曲不动点p使得Ws(p)∩Wu(p)≠∅横截相交，则f在p的邻域内具有马蹄结构。\n\n进一步地，我们研究了Lyapunov指数λ(x)=lim_{n→∞}(1/n)log|Df^n(x)|的分布性质。对于遍历测度μ，几乎处处存在Lyapunov指数，且∫λ(x)dμ(x)等于测度熵hμ(f)。\n\n应用到具体系统：考虑Hénon映射H_a,b(x,y)=(1-ax²+y,bx)，当参数a=1.4，b=0.3时，系统展现出奇异吸引子。通过数值计算，我们验证了系统的分形维数D≈1.261，且最大Lyapunov指数λ₁≈0.419>0。\n\n结论：拓扑动力系统中的混沌行为可通过严格的数学分析进行刻画，拓扑熵、Lyapunov指数和分形维数构成了描述系统复杂性的重要工具。这些结果在物理学、生物学和工程学中的非线性系统分析中具有广泛应用前景。",
+    "length": 742
+  },
+  "compressed": {
+    "levels": [
+      "拓扑动力系统中的混沌行为可通过严格的数学分析进行刻画，拓扑熵、Lyapunov指数和分形维数构成了描述系统复杂性的重要工具。这些结果在物理学、生物学和工程学中的非线性系统分析中具有广泛应用前景。",
+      "3时，系统展现出奇异吸引子，分形维数D≈1，最大Lyapunov指数λ₁≈0.",
+      "存在双曲不动点p，且∫λ(x)dμ(x)=hμ(f)，",
+      "研究拓扑动力系统中的混沌，当x∈[1/2，",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "level_lengths": [
+      97,
+      39,
+      27,
+      21,
+      0,
+      0,
+      0,
+      0
+    ],
+    "thresholds": [
+      100,
+      61,
+      38,
+      23,
+      14,
+      9,
+      5,
+      3
+    ],
+    "level_analysis": [
+      {
+        "level": 0,
+        "length": 97,
+        "threshold": 100,
+        "usage_ratio": 0.97,
+        "is_overflow": false,
+        "content": "拓扑动力系统中的混沌行为可通过严格的数学分析进行刻画，拓扑熵、Lyapunov指数和分形维数构成了描述系统复杂性的重要工具。这些结果在物理学、生物学和工程学中的非线性系统分析中具有广泛应用前景。"
+      },
+      {
+        "level": 1,
+        "length": 39,
+        "threshold": 61,
+        "usage_ratio": 0.639344262295082,
+        "is_overflow": false,
+        "content": "3时，系统展现出奇异吸引子，分形维数D≈1，最大Lyapunov指数λ₁≈0."
+      },
+      {
+        "level": 2,
+        "length": 27,
+        "threshold": 38,
+        "usage_ratio": 0.7105263157894737,
+        "is_overflow": false,
+        "content": "存在双曲不动点p，且∫λ(x)dμ(x)=hμ(f)，"
+      },
+      {
+        "level": 3,
+        "length": 21,
+        "threshold": 23,
+        "usage_ratio": 0.9130434782608695,
+        "is_overflow": false,
+        "content": "研究拓扑动力系统中的混沌，当x∈[1/2，"
+      },
+      {
+        "level": 4,
+        "length": 0,
+        "threshold": 14,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      },
+      {
+        "level": 5,
+        "length": 0,
+        "threshold": 9,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      },
+      {
+        "level": 6,
+        "length": 0,
+        "threshold": 5,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      },
+      {
+        "level": 7,
+        "length": 0,
+        "threshold": 3,
+        "usage_ratio": 0.0,
+        "is_overflow": false,
+        "content": ""
+      }
+    ]
+  },
+  "statistics": {
+    "original_length": 742,
+    "compressed_length": 184,
+    "compression_ratio": 0.24797843665768193,
+    "compression_efficiency": 75.2021563342318,
+    "processing_time": 38.371737241744995,
+    "space_saved": 558
+  },
+  "config": {
+    "ratio": 0.618,
+    "base_threshold": 100,
+    "max_levels": 8
+  }
+}

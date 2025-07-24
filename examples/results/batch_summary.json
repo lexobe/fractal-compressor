@@ -1,0 +1,743 @@
+{
+  "batch_info": {
+    "timestamp": "2025-07-24 10:29:04",
+    "total_files": 6,
+    "successful_files": 6,
+    "failed_files": 0
+  },
+  "overall_statistics": {
+    "total_original_chars": 3168,
+    "total_compressed_chars": 1018,
+    "total_space_saved": 2150,
+    "overall_compression_ratio": 0.3213383838383838,
+    "average_compression_efficiency": 65.1458327469153,
+    "total_processing_time": 147.13556718826294
+  },
+  "individual_results": {
+    "corpus_1_news.txt": {
+      "source": "corpus_1_news.txt",
+      "timestamp": "2025-07-24 10:26:47",
+      "success": true,
+      "original": {
+        "text": "近日，我国科学家在量子计算领域取得重大突破。中科院量子信息重点实验室宣布，其研发的新型量子处理器在特定算法上实现了显著的性能提升。该处理器采用超导量子比特技术，成功将量子相干时间延长至200微秒，比此前记录提升了50%。\n\n研究团队表示，这一突破将为解决复杂计算问题提供新的可能性。量子计算在密码学、药物研发、材料科学等领域具有巨大应用潜力。目前，该实验室正与多家科技企业合作，推动技术产业化应用。\n\n专家指出，尽管量子计算仍面临诸多技术挑战，但这次突破标志着我国在该领域已达到国际先进水平。未来几年，随着技术不断成熟，量子计算有望在更多实际应用场景中发挥重要作用。",
+        "length": 283
+      },
+      "compressed": {
+        "levels": [
+          "尽管量子计算仍面临诸多技术挑战，但这次突破标志着我国在该领域已达到国际先进水平。未来几年，随着技术不断成熟，量子计算有望在更多实际应用场景中发挥重要作用。",
+          "量子相干时间延长至200微秒，研究团队与多家科技企业合作，推动其在密码学、药物研发等领域的应用。",
+          "近日，我国科学家在量子计算领域取得重大突破，中科院研发的新型量子",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "level_lengths": [
+          77,
+          48,
+          32,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "thresholds": [
+          100,
+          61,
+          38,
+          23,
+          14,
+          9,
+          5,
+          3
+        ],
+        "level_analysis": [
+          {
+            "level": 0,
+            "length": 77,
+            "threshold": 100,
+            "usage_ratio": 0.77,
+            "is_overflow": false,
+            "content": "尽管量子计算仍面临诸多技术挑战，但这次突破标志着我国在该领域已达到国际先进水平。未来几年，随着技术不断成熟，量子计算有望在更多实际应用场景中发挥重要作用。"
+          },
+          {
+            "level": 1,
+            "length": 48,
+            "threshold": 61,
+            "usage_ratio": 0.7868852459016393,
+            "is_overflow": false,
+            "content": "量子相干时间延长至200微秒，研究团队与多家科技企业合作，推动其在密码学、药物研发等领域的应用。"
+          },
+          {
+            "level": 2,
+            "length": 32,
+            "threshold": 38,
+            "usage_ratio": 0.8421052631578947,
+            "is_overflow": false,
+            "content": "近日，我国科学家在量子计算领域取得重大突破，中科院研发的新型量子"
+          },
+          {
+            "level": 3,
+            "length": 0,
+            "threshold": 23,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 4,
+            "length": 0,
+            "threshold": 14,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 5,
+            "length": 0,
+            "threshold": 9,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 6,
+            "length": 0,
+            "threshold": 5,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 7,
+            "length": 0,
+            "threshold": 3,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          }
+        ]
+      },
+      "statistics": {
+        "original_length": 283,
+        "compressed_length": 157,
+        "compression_ratio": 0.5547703180212014,
+        "compression_efficiency": 44.52296819787986,
+        "processing_time": 10.404819965362549,
+        "space_saved": 126
+      },
+      "config": {
+        "ratio": 0.618,
+        "base_threshold": 100,
+        "max_levels": 8
+      }
+    },
+    "corpus_2_academic.txt": {
+      "source": "corpus_2_academic.txt",
+      "timestamp": "2025-07-24 10:27:01",
+      "success": true,
+      "original": {
+        "text": "人工智能技术的快速发展带来了诸多机遇，同时也带来了潜在的风险和挑战。本技术报告旨在提出一个全面的前沿人工智能风险管理框架，通过系统性地识别、评估和缓解人工智能系统可能存在的各类风险。报告从多个维度深入探讨了人工智能风险管理的关键问题，包括技术安全、伦理考量、社会影响以及潜在的负面后果。\n\n研究团队认为，有效的风险管理不仅需要技术层面的创新，还需要跨学科的协作和前瞻性思考。报告提出了一个多层次的风险评估模型，涵盖了算法偏见、数据隐私、系统可解释性、潜在误用等多个关键风险领域。通过建立全面的风险识别和评估机制，研究旨在为人工智能的负责任发展提供理论基础和实践指导。\n\n此外，报告强调了持续监测和动态调整风险管理策略的重要性。随着人工智能技术的快速迭代，风险管理框架也需要保持灵活性和前瞻性。研究建议建立多方参与的治理机制，包括技术专家、伦理学家、政策制定者和社会利益相关者，共同推动人工智能的安全和可持续发展。该框架的实施将有助于构建更加可信、透明和负责任的人工智能生态系统。",
+        "length": 439
+      },
+      "compressed": {
+        "levels": [
+          "包括技术专家、伦理学家、政策制定者和社会利益相关者，共同推动人工智能的安全和可持续发展。该框架的实施将有助于构建更加可信、透明和负责任的人工智能生态系统。",
+          "报告提出多层次风险管理框架，涵盖算法偏见、数据隐私等，强调灵活性、前瞻性及多方参与的治理机制，以支持人工智能的负责任发展。",
+          "人工智能技术的快速发展带来了机遇与挑战，",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "level_lengths": [
+          77,
+          61,
+          20,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "thresholds": [
+          100,
+          61,
+          38,
+          23,
+          14,
+          9,
+          5,
+          3
+        ],
+        "level_analysis": [
+          {
+            "level": 0,
+            "length": 77,
+            "threshold": 100,
+            "usage_ratio": 0.77,
+            "is_overflow": false,
+            "content": "包括技术专家、伦理学家、政策制定者和社会利益相关者，共同推动人工智能的安全和可持续发展。该框架的实施将有助于构建更加可信、透明和负责任的人工智能生态系统。"
+          },
+          {
+            "level": 1,
+            "length": 61,
+            "threshold": 61,
+            "usage_ratio": 1.0,
+            "is_overflow": false,
+            "content": "报告提出多层次风险管理框架，涵盖算法偏见、数据隐私等，强调灵活性、前瞻性及多方参与的治理机制，以支持人工智能的负责任发展。"
+          },
+          {
+            "level": 2,
+            "length": 20,
+            "threshold": 38,
+            "usage_ratio": 0.5263157894736842,
+            "is_overflow": false,
+            "content": "人工智能技术的快速发展带来了机遇与挑战，"
+          },
+          {
+            "level": 3,
+            "length": 0,
+            "threshold": 23,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 4,
+            "length": 0,
+            "threshold": 14,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 5,
+            "length": 0,
+            "threshold": 9,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 6,
+            "length": 0,
+            "threshold": 5,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 7,
+            "length": 0,
+            "threshold": 3,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          }
+        ]
+      },
+      "statistics": {
+        "original_length": 439,
+        "compressed_length": 158,
+        "compression_ratio": 0.35990888382687924,
+        "compression_efficiency": 64.00911161731207,
+        "processing_time": 13.365411758422852,
+        "space_saved": 281
+      },
+      "config": {
+        "ratio": 0.618,
+        "base_threshold": 100,
+        "max_levels": 8
+      }
+    },
+    "corpus_3_novel.txt": {
+      "source": "corpus_3_novel.txt",
+      "timestamp": "2025-07-24 10:27:28",
+      "success": true,
+      "original": {
+        "text": "春风徐来，江南水乡的小镇渐渐苏醒。青石板路上还留着昨夜雨水的痕迹，在晨光中闪闪发亮。李明轻推开临街茶馆的木门，铜铃发出清脆的响声，打破了清晨的宁静。\n\n\"老板，来壶龙井。\"他在靠窗的位置坐下，目光望向对面的古桥。桥上已有早起的行人，他们的身影在薄雾中若隐若现，如同水墨画中的人物。\n\n茶馆老板是个花甲之年的老人，动作虽然缓慢但十分娴熟。他烧水、温杯、投茶，每个步骤都透着几十年的功夫。\"这龙井是头春的，您尝尝。\"老人将茶杯轻放在李明面前。\n\n李明端起茶杯，茶香清雅，入口甘甜。透过杯底的茶叶，他仿佛看到了江南的青山绿水。\"老人家，您这茶馆开了多少年了？\"\n\n\"四十年了。\"老人在对面坐下，眼中满含着岁月的沧桑，\"这条街上的变化我都看在眼里。有些东西变了，有些东西永远不会变。\"\n\n窗外，一只白鹭从古桥上掠过，投下淡淡的影子。李明放下茶杯，若有所思。在这个快速变化的时代里，能找到这样一片宁静之地，实在是难得的福分。老人的话让他想起了自己匆忙的都市生活，心中不禁生出几分感慨。\n\n\"年轻人，有时候慢一点也没什么不好。\"老人似乎看穿了他的心思，温和地说道。阳光透过窗棂洒在桌案上，茶香在空气中缓缓飘散，这一刻仿佛时间都静止了。",
+        "length": 511
+      },
+      "compressed": {
+        "levels": [
+          "\"年轻人，有时候慢一点也没什么不好。\"老人似乎看穿了他的心思，温和地说道。阳光透过窗棂洒在桌案上，茶香在空气中缓缓飘散，这一刻仿佛时间都静止了。",
+          "\"有些东西变了，有些东西永远不会变。\"李明放下茶杯，若有所思，老人话让他想起匆忙的都市生活，心中生出几分感慨。",
+          "您尝尝。\"茶香清雅，入口甘甜，老人感叹街道的变化。",
+          "李明轻推茶馆门，端起茶杯，望向古桥，",
+          "春风徐来，江南水乡",
+          "",
+          "",
+          ""
+        ],
+        "level_lengths": [
+          72,
+          55,
+          25,
+          18,
+          9,
+          0,
+          0,
+          0
+        ],
+        "thresholds": [
+          100,
+          61,
+          38,
+          23,
+          14,
+          9,
+          5,
+          3
+        ],
+        "level_analysis": [
+          {
+            "level": 0,
+            "length": 72,
+            "threshold": 100,
+            "usage_ratio": 0.72,
+            "is_overflow": false,
+            "content": "\"年轻人，有时候慢一点也没什么不好。\"老人似乎看穿了他的心思，温和地说道。阳光透过窗棂洒在桌案上，茶香在空气中缓缓飘散，这一刻仿佛时间都静止了。"
+          },
+          {
+            "level": 1,
+            "length": 55,
+            "threshold": 61,
+            "usage_ratio": 0.9016393442622951,
+            "is_overflow": false,
+            "content": "\"有些东西变了，有些东西永远不会变。\"李明放下茶杯，若有所思，老人话让他想起匆忙的都市生活，心中生出几分感慨。"
+          },
+          {
+            "level": 2,
+            "length": 25,
+            "threshold": 38,
+            "usage_ratio": 0.6578947368421053,
+            "is_overflow": false,
+            "content": "您尝尝。\"茶香清雅，入口甘甜，老人感叹街道的变化。"
+          },
+          {
+            "level": 3,
+            "length": 18,
+            "threshold": 23,
+            "usage_ratio": 0.782608695652174,
+            "is_overflow": false,
+            "content": "李明轻推茶馆门，端起茶杯，望向古桥，"
+          },
+          {
+            "level": 4,
+            "length": 9,
+            "threshold": 14,
+            "usage_ratio": 0.6428571428571429,
+            "is_overflow": false,
+            "content": "春风徐来，江南水乡"
+          },
+          {
+            "level": 5,
+            "length": 0,
+            "threshold": 9,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 6,
+            "length": 0,
+            "threshold": 5,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 7,
+            "length": 0,
+            "threshold": 3,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          }
+        ]
+      },
+      "statistics": {
+        "original_length": 511,
+        "compressed_length": 179,
+        "compression_ratio": 0.350293542074364,
+        "compression_efficiency": 64.9706457925636,
+        "processing_time": 26.886207103729248,
+        "space_saved": 332
+      },
+      "config": {
+        "ratio": 0.618,
+        "base_threshold": 100,
+        "max_levels": 8
+      }
+    },
+    "corpus_4_technical.txt": {
+      "source": "corpus_4_technical.txt",
+      "timestamp": "2025-07-24 10:28:05",
+      "success": true,
+      "original": {
+        "text": "DeepSpeed深度学习优化库技术文档\n\n1. 系统概述\nDeepSpeed是一个深度学习优化库，旨在使分布式训练和推理变得简单、高效且有效。该库由微软研究院开发，专注于解决大规模深度学习模型训练和推理中的关键挑战。\n\n2. 核心技术特性\n2.1 ZeRO内存优化\nZeRO（Zero Redundancy Optimizer）技术通过消除数据并行中的内存冗余，实现了显著的内存效率提升。主要包括：\n- ZeRO-1：优化器状态分片\n- ZeRO-2：梯度分片\n- ZeRO-3：参数分片\n\n2.2 3D并行策略\n结合数据并行、模型并行和流水线并行，实现最优的计算资源利用：\n- 数据并行：跨设备分发训练样本\n- 模型并行：跨设备分割模型参数\n- 流水线并行：跨设备分割模型层\n\n3. 安装配置\n3.1 环境要求\n- Python 3.6+\n- PyTorch 1.5+\n- CUDA 10.1+\n\n3.2 安装步骤\n```bash\npip install deepspeed\n```\n\n4. 使用示例\n```python\nimport deepspeed\nmodel_engine, optimizer, _, _ = deepspeed.initialize(\n    model=model,\n    model_parameters=model.parameters(),\n    config_params=ds_config\n)\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。",
+        "length": 713
+      },
+      "compressed": {
+        "levels": [
+          ")\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。",
+          "arameters=model, config_params=ds_config)",
+          "izer = deepsp`，eed(model)",
+          "深度学习优化库，由微软研究院开发，结合数分片，",
+          "DeepSpeed",
+          "",
+          "",
+          ""
+        ],
+        "level_lengths": [
+          93,
+          41,
+          25,
+          23,
+          9,
+          0,
+          0,
+          0
+        ],
+        "thresholds": [
+          100,
+          61,
+          38,
+          23,
+          14,
+          9,
+          5,
+          3
+        ],
+        "level_analysis": [
+          {
+            "level": 0,
+            "length": 93,
+            "threshold": 100,
+            "usage_ratio": 0.93,
+            "is_overflow": false,
+            "content": ")\n```\n\n5. 性能优化建议\n- 合理设置批处理大小\n- 选择适当的并行策略\n- 优化通信开销\n- 使用混合精度训练\n\n该框架已成功应用于GPT-3、BLOOM等大型语言模型的训练。"
+          },
+          {
+            "level": 1,
+            "length": 41,
+            "threshold": 61,
+            "usage_ratio": 0.6721311475409836,
+            "is_overflow": false,
+            "content": "arameters=model, config_params=ds_config)"
+          },
+          {
+            "level": 2,
+            "length": 25,
+            "threshold": 38,
+            "usage_ratio": 0.6578947368421053,
+            "is_overflow": false,
+            "content": "izer = deepsp`，eed(model)"
+          },
+          {
+            "level": 3,
+            "length": 23,
+            "threshold": 23,
+            "usage_ratio": 1.0,
+            "is_overflow": false,
+            "content": "深度学习优化库，由微软研究院开发，结合数分片，"
+          },
+          {
+            "level": 4,
+            "length": 9,
+            "threshold": 14,
+            "usage_ratio": 0.6428571428571429,
+            "is_overflow": false,
+            "content": "DeepSpeed"
+          },
+          {
+            "level": 5,
+            "length": 0,
+            "threshold": 9,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 6,
+            "length": 0,
+            "threshold": 5,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 7,
+            "length": 0,
+            "threshold": 3,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          }
+        ]
+      },
+      "statistics": {
+        "original_length": 713,
+        "compressed_length": 191,
+        "compression_ratio": 0.26788218793828894,
+        "compression_efficiency": 73.21178120617111,
+        "processing_time": 37.90225696563721,
+        "space_saved": 522
+      },
+      "config": {
+        "ratio": 0.618,
+        "base_threshold": 100,
+        "max_levels": 8
+      }
+    },
+    "corpus_5_literature.txt": {
+      "source": "corpus_5_literature.txt",
+      "timestamp": "2025-07-24 10:28:26",
+      "success": true,
+      "original": {
+        "text": "月夜思\n\n月色如水，洒向大地的每一个角落。我独自站在这片寂静的原野上，仰望那轮明月，心中涌起无尽的思绪。\n\n远山如黛，在月光的映照下显得格外神秘。微风轻拂过脸颊，带来阵阵花香，那是夜来香的味道，淡雅而深远。此刻的宁静，让人忘却了白日的喧嚣与烦忧。\n\n记得儿时，也是这样的月夜，祖母总是在院子里摇着蒲扇，给我讲那些古老的故事。她说月亮上有嫦娥，有玉兔，有那棵永远砍不倒的桂花树。那时的我总是听得入神，眼中充满了对那个神秘世界的向往。\n\n如今年过三十，再看这轮明月，心境已然不同。月还是那轮月，但观月的人已不再是那个天真的孩童。岁月在我们身上留下了痕迹，也在我们心中沉淀了更多的感悟。\n\n人生如月，有圆有缺，有明有暗。正如苏轼所说：\"人有悲欢离合，月有阴晴圆缺，此事古难全。\"我们无法改变月相的盈亏，正如我们无法完全掌控人生的起伏。但我们可以学会在每一个阶段都保持内心的平静与美好。\n\n月光依旧温柔，如母亲的手轻抚着孩子的脸庞。在这样的夜晚，所有的焦虑都显得微不足道，所有的匆忙都可以暂时停歇。让心灵在这片月色中得到片刻的栖息，这或许就是生活给予我们最珍贵的礼物。",
+        "length": 480
+      },
+      "compressed": {
+        "levels": [
+          "月光依旧温柔，如母亲的手轻抚着孩子的脸庞。在这样的夜晚，所有的焦虑都显得微不足道，所有的匆忙都可以暂时停歇。让心灵在这片月色中得到片刻的栖息，这或许就是生活给予我们最珍贵的礼物。",
+          "人生如月，有圆有缺，虽无法掌控起伏，但可在每个阶段保持内心的平静与美好。",
+          "月色如水，洒向大地，仰望明月，心中涌起无尽思绪。",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "level_lengths": [
+          89,
+          36,
+          24,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "thresholds": [
+          100,
+          61,
+          38,
+          23,
+          14,
+          9,
+          5,
+          3
+        ],
+        "level_analysis": [
+          {
+            "level": 0,
+            "length": 89,
+            "threshold": 100,
+            "usage_ratio": 0.89,
+            "is_overflow": false,
+            "content": "月光依旧温柔，如母亲的手轻抚着孩子的脸庞。在这样的夜晚，所有的焦虑都显得微不足道，所有的匆忙都可以暂时停歇。让心灵在这片月色中得到片刻的栖息，这或许就是生活给予我们最珍贵的礼物。"
+          },
+          {
+            "level": 1,
+            "length": 36,
+            "threshold": 61,
+            "usage_ratio": 0.5901639344262295,
+            "is_overflow": false,
+            "content": "人生如月，有圆有缺，虽无法掌控起伏，但可在每个阶段保持内心的平静与美好。"
+          },
+          {
+            "level": 2,
+            "length": 24,
+            "threshold": 38,
+            "usage_ratio": 0.631578947368421,
+            "is_overflow": false,
+            "content": "月色如水，洒向大地，仰望明月，心中涌起无尽思绪。"
+          },
+          {
+            "level": 3,
+            "length": 0,
+            "threshold": 23,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 4,
+            "length": 0,
+            "threshold": 14,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 5,
+            "length": 0,
+            "threshold": 9,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 6,
+            "length": 0,
+            "threshold": 5,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 7,
+            "length": 0,
+            "threshold": 3,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          }
+        ]
+      },
+      "statistics": {
+        "original_length": 480,
+        "compressed_length": 149,
+        "compression_ratio": 0.3104166666666667,
+        "compression_efficiency": 68.95833333333333,
+        "processing_time": 20.20513415336609,
+        "space_saved": 331
+      },
+      "config": {
+        "ratio": 0.618,
+        "base_threshold": 100,
+        "max_levels": 8
+      }
+    },
+    "corpus_6_mathematics.txt": {
+      "source": "corpus_6_mathematics.txt",
+      "timestamp": "2025-07-24 10:29:04",
+      "success": true,
+      "original": {
+        "text": "本文研究了拓扑动力系统中的混沌现象及其在数学分析中的应用。设(X,T)为拓扑动力系统，其中X是紧致度量空间，T:X→X是连续映射。我们定义了系统的拓扑熵h(T)=sup{h(T,α):α是X的有限开覆盖}，其中h(T,α)表示相对于覆盖α的拓扑熵。\n\n定理1：若T具有正拓扑熵，则存在不可数的T-不变集S⊂X，使得T|S拓扑共轭于满移位σ:Σ₂→Σ₂，其中Σ₂={0,1}^ℕ是双符号空间。\n\n证明：考虑系统的周期点集合Per(T)={x∈X:T^n(x)=x对某个n∈ℕ}。由于h(T)>0，根据变分原理，存在T-不变测度μ使得hμ(T)>0。构造马蹄映射H:I→I，其中I=[0,1]，定义H(x)=2x (mod 1)当x∈[0,1/2)，H(x)=2x-1当x∈[1/2,1]。\n\n引理2：设f:M→M是紧致流形M上的C¹映射，如果存在双曲不动点p使得Ws(p)∩Wu(p)≠∅横截相交，则f在p的邻域内具有马蹄结构。\n\n进一步地，我们研究了Lyapunov指数λ(x)=lim_{n→∞}(1/n)log|Df^n(x)|的分布性质。对于遍历测度μ，几乎处处存在Lyapunov指数，且∫λ(x)dμ(x)等于测度熵hμ(f)。\n\n应用到具体系统：考虑Hénon映射H_a,b(x,y)=(1-ax²+y,bx)，当参数a=1.4，b=0.3时，系统展现出奇异吸引子。通过数值计算，我们验证了系统的分形维数D≈1.261，且最大Lyapunov指数λ₁≈0.419>0。\n\n结论：拓扑动力系统中的混沌行为可通过严格的数学分析进行刻画，拓扑熵、Lyapunov指数和分形维数构成了描述系统复杂性的重要工具。这些结果在物理学、生物学和工程学中的非线性系统分析中具有广泛应用前景。",
+        "length": 742
+      },
+      "compressed": {
+        "levels": [
+          "拓扑动力系统中的混沌行为可通过严格的数学分析进行刻画，拓扑熵、Lyapunov指数和分形维数构成了描述系统复杂性的重要工具。这些结果在物理学、生物学和工程学中的非线性系统分析中具有广泛应用前景。",
+          "3时，系统展现出奇异吸引子，分形维数D≈1，最大Lyapunov指数λ₁≈0.",
+          "存在双曲不动点p，且∫λ(x)dμ(x)=hμ(f)，",
+          "研究拓扑动力系统中的混沌，当x∈[1/2，",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "level_lengths": [
+          97,
+          39,
+          27,
+          21,
+          0,
+          0,
+          0,
+          0
+        ],
+        "thresholds": [
+          100,
+          61,
+          38,
+          23,
+          14,
+          9,
+          5,
+          3
+        ],
+        "level_analysis": [
+          {
+            "level": 0,
+            "length": 97,
+            "threshold": 100,
+            "usage_ratio": 0.97,
+            "is_overflow": false,
+            "content": "拓扑动力系统中的混沌行为可通过严格的数学分析进行刻画，拓扑熵、Lyapunov指数和分形维数构成了描述系统复杂性的重要工具。这些结果在物理学、生物学和工程学中的非线性系统分析中具有广泛应用前景。"
+          },
+          {
+            "level": 1,
+            "length": 39,
+            "threshold": 61,
+            "usage_ratio": 0.639344262295082,
+            "is_overflow": false,
+            "content": "3时，系统展现出奇异吸引子，分形维数D≈1，最大Lyapunov指数λ₁≈0."
+          },
+          {
+            "level": 2,
+            "length": 27,
+            "threshold": 38,
+            "usage_ratio": 0.7105263157894737,
+            "is_overflow": false,
+            "content": "存在双曲不动点p，且∫λ(x)dμ(x)=hμ(f)，"
+          },
+          {
+            "level": 3,
+            "length": 21,
+            "threshold": 23,
+            "usage_ratio": 0.9130434782608695,
+            "is_overflow": false,
+            "content": "研究拓扑动力系统中的混沌，当x∈[1/2，"
+          },
+          {
+            "level": 4,
+            "length": 0,
+            "threshold": 14,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 5,
+            "length": 0,
+            "threshold": 9,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 6,
+            "length": 0,
+            "threshold": 5,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          },
+          {
+            "level": 7,
+            "length": 0,
+            "threshold": 3,
+            "usage_ratio": 0.0,
+            "is_overflow": false,
+            "content": ""
+          }
+        ]
+      },
+      "statistics": {
+        "original_length": 742,
+        "compressed_length": 184,
+        "compression_ratio": 0.24797843665768193,
+        "compression_efficiency": 75.2021563342318,
+        "processing_time": 38.371737241744995,
+        "space_saved": 558
+      },
+      "config": {
+        "ratio": 0.618,
+        "base_threshold": 100,
+        "max_levels": 8
+      }
+    }
+  },
+  "config": {
+    "ratio": 0.618,
+    "base_threshold": 100,
+    "max_levels": 8
+  }
+}

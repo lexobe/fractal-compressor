@@ -190,115 +190,67 @@ class FractalCompressor:
             len(existing_content), len(new_text), target_length
         )
         
-        # 构造整合prompt
-        combined_text = existing_content + "\n" + new_text
-        
-        # 调用LLM进行智能整合
+        # 调用LLM进行智能整合，明确分离现有内容和新文本
         try:
             integrated_result = self._call_llm_integration(
-                combined_text, target_length, len(existing_content), len(new_text)
+                existing_content, new_text, target_length
             )
             
             self.logger.debug(
                 "整合完成: %d字符 -> %d字符 (目标%d)",
-                len(combined_text), len(integrated_result), target_length
+                len(existing_content) + len(new_text), len(integrated_result), target_length
             )
             
             return integrated_result
             
         except Exception as e:
-            # 如果LLM整合失败，使用fallback策略
-            self.logger.warning("LLM整合失败，使用fallback策略: %s", str(e))
-            return self._fallback_integration(combined_text, target_length)
+            # 如果LLM整合失败，直接抛出异常
+            self.logger.error("LLM整合失败: %s", str(e))
+            raise Exception(f"LLM智能整合失败: {str(e)}")
     
-    def _call_llm_integration(self, combined_text: str, target_length: int, 
-                             existing_length: int, new_length: int) -> str:
+    def _call_llm_integration(self, existing_content: str, new_text: str, target_length: int) -> str:
         """
         调用LLM进行内容整合的具体实现
         
         Args:
-            combined_text: 现有内容+新内容的组合
+            existing_content: 现有内容
+            new_text: 新增文本
             target_length: 目标长度
-            existing_length: 现有内容长度
-            new_length: 新内容长度
             
         Returns:
             整合后的文本
         """
         compressor = LLMTextCompressor()
         
-        # 使用自定义的整合策略和prompt
+        # 构建分离式整合提示词
+        integration_prompt = f"""你是一个专业的文本整合专家。请智能整合以下两部分内容：
+
+🔵 现有内容（{len(existing_content)}字符）：
+{existing_content}
+
+🟢 新增内容（{len(new_text)}字符）：
+{new_text}
+
+整合目标：
+1. 保持现有内容的核心信息和逻辑结构
+2. 将新增内容的关键信息自然融入
+3. 去除重复和冗余表述
+4. 提升整体语义连贯性
+5. 严格控制在{target_length}字符以内
+
+请直接输出整合结果："""
+        
+        # 使用自定义的整合策略
         result = compressor.compress(
-            text=combined_text,
+            text=existing_content + "\n" + new_text,
             target_length=target_length,
             llm_config=self.llm_config,
             strategy="precise",
             max_attempts=2,
             strict_length=True,
-            custom_template=f"""你是一个专业的文本整合专家。请智能整合以下内容：
-
-原有内容（{existing_length}字符，保留核心信息）：
-{combined_text[:existing_length]}
-
-新增内容（{new_length}字符，融入关键信息）：
-{combined_text[existing_length+1:]}
-
-整合要求：
-1. 保持原有内容的核心信息和逻辑结构
-2. 将新内容的关键信息自然融入
-3. 去除重复和冗余表述
-4. 提升整体语义连贯性
-5. 严格控制在{{target_length}}字符以内
-
-请直接输出整合结果：{{text}}""",
+            custom_template=integration_prompt,
         )
         return result["text"]
-    
-    def _fallback_integration(self, combined_text: str, target_length: int) -> str:
-        """
-        LLM整合失败时的回退策略
-        
-        Args:
-            combined_text: 组合文本
-            target_length: 目标长度
-            
-        Returns:
-            回退处理后的文本
-        """
-        if len(combined_text) <= target_length:
-            return combined_text
-        else:
-            # 智能截断到目标长度
-            return self._smart_truncate_for_integration(combined_text, target_length)
-    
-    def _smart_truncate_for_integration(self, text: str, max_length: int) -> str:
-        """
-        针对整合场景的智能截断
-        
-        Args:
-            text: 需要截断的文本
-            max_length: 最大长度
-            
-        Returns:
-            截断后的文本
-        """
-        if len(text) <= max_length:
-            return text
-
-        # 尝试在句子边界截断
-        sentences_ends = ["。", "！", "？", ".", "!", "?"]
-        for i in range(max_length - 1, max(0, max_length - 20), -1):
-            if i < len(text) and text[i] in sentences_ends:
-                return text[:i + 1]
-
-        # 尝试在逗号或分号处截断  
-        punctuation = ["，", ",", "；", ";"]
-        for i in range(max_length - 1, max(0, max_length - 10), -1):
-            if i < len(text) and text[i] in punctuation:
-                return text[:i + 1]
-
-        # 直接截断
-        return text[:max_length]
 
     def _recursive_compress(self, fractal_text: List[str], text: str, level: int):
         """
